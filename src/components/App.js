@@ -1,9 +1,10 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import useLocalStorage from '../hooks/useLocalStorage';
 import ContactForm from './ContactForm';
 import FilterContactList from './FilterContactListItem';
 import ContactList from './ContactList';
-
+import contactId from '../contactid';
+import existentName from '../existentname';
 import { Container, Title } from './Container.styled';
 
 function App () {
@@ -12,19 +13,14 @@ function App () {
 
   const fillingOfPhonebook = (newContact) => {
   const { name } = newContact;
-  const existentName = contacts.find(contact => contact.name === name);
 
-  if (existentName) {
+  if (existentName(contacts, name)) {
     alert(`${name} is already in contacts`);
-  } else {
-    newContact.id = `id-${contactId()}`;
+    return;
+  }
+    newContact.id = `id-${contactId(contacts)}`;
     setContacts([newContact, ...contacts]);
   };
-  };
-
-  const contactId = () => contacts.length > 0
-    ? Math.max.apply(null, contacts.map(({ id }) => Number(id.replace("id-", "")))) + 1
-    : 1;
 
   const filteredContactList = useMemo(() => {
     const normalizedFilter = filter.toLowerCase();
@@ -35,10 +31,6 @@ function App () {
 
   const deleteContact = (needlessContact) =>
     setContacts(() => contacts.filter(contact => contact.id !== needlessContact));
-
-  useEffect(() => {
-    window.localStorage.setItem("contacts", JSON.stringify(contacts));
-  }, [contacts]);
 
   return (
     <Container>
