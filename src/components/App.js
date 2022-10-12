@@ -4,7 +4,6 @@ import ContactForm from './ContactForm';
 import FilterContactList from './FilterContactListItem';
 import ContactList from './ContactList';
 import contactId from '../contactid';
-import existentName from '../existentname';
 import { Container, Title } from './Container.styled';
 
 function App () {
@@ -13,8 +12,9 @@ function App () {
 
   const fillingOfPhonebook = (newContact) => {
   const { name } = newContact;
+    const existentName =  contacts.find(contact => contact.name === newName);
 
-  if (existentName(contacts, name)) {
+  if (existentName) {
     alert(`${name} is already in contacts`);
     return;
   }
