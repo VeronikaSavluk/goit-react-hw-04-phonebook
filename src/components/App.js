@@ -12,7 +12,7 @@ function App () {
 
   const fillingOfPhonebook = (newContact) => {
   const { name } = newContact;
-    const existentName =  contacts.find(contact => contact.name === newName);
+    const existentName =  contacts.find(contact => contact.name === name);
 
   if (existentName) {
     alert(`${name} is already in contacts`);
